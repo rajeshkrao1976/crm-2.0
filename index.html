@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raveone Lead System · Complete</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #f5f7fa;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1rem;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        h1 i { color: #0d9488; }
+        .subhead {
+            color: #475569;
+            margin-bottom: 2rem;
+            border-left: 4px solid #0d9488;
+            padding-left: 1rem;
+            background: #f0fdfa;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
+        }
+        .api-key-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .api-key-section label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+        .api-key-section input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: monospace;
+            background: white;
+            margin-bottom: 0.75rem;
+        }
+        .api-key-section .note {
+            font-size: 0.85rem;
+            color: #64748b;
+            background: #e6f0fa;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 700px) {
+            .two-column { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: #f9f9fc;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #e9edf2;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #0f172a;
+        }
+        .card-title i { color: #0d9488; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #334155;
+        }
+        .form-group select, .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .platform-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            border: 1px solid #dde3e9;
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+        .platform-badge.selected {
+            background: #0d9488;
+            color: white;
+            border-color: #0d9488;
+        }
+        .platform-badge i { font-size: 1rem; }
+        .btn {
+            background: #0d9488;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem 1.8rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .btn:hover { background: #0f766e; }
+        .btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: white;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            margin-top: 0.2rem;
+        }
+        .btn-secondary:hover { background: #f1f5f9; }
+        .output-area {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-height: 200px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            overflow-y: auto;
+            max-height: 350px;
+        }
+        .copy-btn {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            padding: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.1s;
+        }
+        .copy-btn:hover { background: #e2e8f0; }
+        .composer-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .composer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 30px;
+            padding: 0.5rem 1.2rem;
+            text-decoration: none;
+            color: #1e293b;
+            font-size: 0.9rem;
+            transition: background 0.1s;
+        }
+        .composer-link i { font-size: 1.1rem; }
+        .composer-link:hover { background: #f1f5f9; }
+        .composer-link.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .platform-note {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .leads-list {
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            padding: 0.5rem;
+        }
+        .lead-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 0.9rem;
+        }
+        .lead-item:last-child { border-bottom: none; }
+        .lead-item strong { color: #0d9488; }
+        .error { color: #b91c1c; background: #fee2e2; padding: 0.75rem; border-radius: 12px; margin-bottom: 1rem; }
+        .success { color: #0d9488; background: #e6f7f5; padding: 0.75rem; border-radius: 12px; margin-bottom: 1rem; }
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 1.5rem 0;
+        }
+        .row-flex {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .row-flex .form-group { flex: 1 1 180px; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <h1><i class="fas fa-bullseye"></i> Raveone Complete Lead System</h1>
+    <div class="subhead">
+        Generate posts, capture leads, and track everything – all in one tool.
+    </div>
+
+    <!-- API Key & GAS URL Configuration -->
+    <div class="api-key-section">
+        <label><i class="fas fa-key"></i> Your Gemini API Key</label>
+        <input type="password" id="apiKeyInput" placeholder="AIzaSy... (get from makersuite.google.com/app/apikey)" />
+        <div class="note" style="margin-top:0.5rem;">
+            🔐 Your key stays in your browser – never stored. Get a free key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+        </div>
+        <label style="margin-top:1rem;"><i class="fas fa-link"></i> Google Apps Script URL</label>
+        <input type="url" id="gasUrlInput" value="https://script.google.com/macros/s/AKfycbzDCpkEsIkFvX6apJSRGrHXLYTi1CrYDt_eScqK9y3FMA43xngN67Sy7obDXfR4AOh1Sw/exec" />
+        <div class="note">
+            ⚙️ Your GAS web app URL (must be deployed with "Anyone" access).
+        </div>
+    </div>
+
+    <!-- Two columns: Left = Content Generator, Right = Lead Management -->
+    <div class="two-column">
+        <!-- LEFT: Content Generator (from previous version) -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-pen-fancy"></i> 1. Generate Post</div>
+            <!-- Platform selection -->
+            <div class="form-group">
+                <label>Platform</label>
+                <div style="margin-bottom: 0.5rem;">
+                    <span class="platform-badge selected" id="badge-linkedin" onclick="selectPlatform('linkedin')"><i class="fab fa-linkedin"></i> LinkedIn</span>
+                    <span class="platform-badge" id="badge-twitter" onclick="selectPlatform('twitter')"><i class="fab fa-twitter"></i> Twitter/X</span>
+                    <span class="platform-badge" id="badge-instagram" onclick="selectPlatform('instagram')"><i class="fab fa-instagram"></i> Instagram</span>
+                    <span class="platform-badge" id="badge-facebook" onclick="selectPlatform('facebook')"><i class="fab fa-facebook"></i> Facebook</span>
+                    <span class="platform-badge" id="badge-recruitment" onclick="selectPlatform('recruitment')"><i class="fas fa-briefcase"></i> Recruitment</span>
+                    <span class="platform-badge" id="badge-leadmagnet" onclick="selectPlatform('leadmagnet')"><i class="fas fa-magnet"></i> Lead Magnet</span>
+                </div>
+                <select id="platformSelect" style="display:none;">
+                    <option value="linkedin" selected>LinkedIn</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="recruitment">Recruitment</option>
+                    <option value="leadmagnet">Lead Magnet</option>
+                </select>
+            </div>
+            <!-- Topic -->
+            <div class="form-group">
+                <label>Topic / Subject</label>
+                <input type="text" id="topicInput" placeholder="e.g., Time management for MSMEs" value="Time management for small business owners" />
+            </div>
+            <!-- Tone & Industry -->
+            <div class="row-flex">
+                <div class="form-group">
+                    <label>Tone</label>
+                    <select id="toneSelect">
+                        <option value="Professional">Professional</option>
+                        <option value="Empathetic" selected>Empathetic</option>
+                        <option value="Aggressive">Aggressive / Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Industry</label>
+                    <select id="industrySelect">
+                        <option value="MSME General">MSME General</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="IT / Tech">IT / Tech</option>
+                        <option value="Auto / Automotive">Auto / Automotive</option>
+                    </select>
+                </div>
+            </div>
+            <!-- UTM Campaign -->
+            <div class="form-group">
+                <label>UTM Campaign (for tracking)</label>
+                <input type="text" id="utmInput" placeholder="e.g., feb2026_training" value="feb2026_leadgen" />
+            </div>
+            <!-- Additional details -->
+            <div class="form-group">
+                <label>Additional details (include link if any)</label>
+                <textarea id="detailsInput" placeholder="Key points, link to your site, etc."></textarea>
+            </div>
+            <!-- Hook & Generate buttons -->
+            <button class="btn btn-secondary" id="hookBtn" onclick="generateHooks()" style="margin-bottom:0.5rem;">
+                <i class="fas fa-lightbulb"></i> Generate 3 Hooks First
+            </button>
+            <button class="btn" id="generateBtn" onclick="generatePost()">
+                <i class="fas fa-wand-magic"></i> Generate Full Post
+            </button>
+
+            <!-- Output area and composer links -->
+            <div style="margin-top:1.5rem;">
+                <div class="card-title"><i class="fas fa-copy"></i> 2. Copy & post</div>
+                <div id="outputArea" class="output-area">✨ Your generated post will appear here.</div>
+                <button class="copy-btn" id="copyBtn" onclick="copyOutput()">
+                    <i class="far fa-copy"></i> Copy to clipboard
+                </button>
+                <div class="composer-links" id="composerRow">
+                    <a href="#" target="_blank" class="composer-link" id="composer-linkedin"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="#" target="_blank" class="composer-link" id="composer-twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a href="#" target="_blank" class="composer-link" id="composer-facebook"><i class="fab fa-facebook"></i> Facebook</a>
+                    <a href="#" target="_blank" class="composer-link" id="composer-instagram"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+                <div class="platform-note">💡 LinkedIn & Twitter open with pre‑filled text. For others, paste manually.</div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Lead Management -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-users"></i> 3. Capture Leads</div>
+            <!-- Form to add a new lead -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="leadName" placeholder="e.g., Priya Sharma" />
+            </div>
+            <div class="form-group">
+                <label>Contact (email/phone/handle)</label>
+                <input type="text" id="leadContact" placeholder="priya@example.com" />
+            </div>
+            <div class="row-flex">
+                <div class="form-group">
+                    <label>Service</label>
+                    <select id="leadService">
+                        <option value="Consulting">Consulting</option>
+                        <option value="Training">Training</option>
+                        <option value="Recruitment">Recruitment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Platform</label>
+                    <select id="leadPlatform">
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="Twitter">Twitter</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notes / Source Post URL (optional)</label>
+                <textarea id="leadNotes" placeholder="e.g., Commented on post X"></textarea>
+            </div>
+            <div class="form-group">
+                <label>UTM Campaign (optional)</label>
+                <input type="text" id="leadUtm" placeholder="e.g., feb2026_training" />
+            </div>
+            <button class="btn" id="addLeadBtn" onclick="addLead()">
+                <i class="fas fa-save"></i> Save Lead to Sheet
+            </button>
+            <div id="leadStatus" style="margin-top:1rem;"></div>
+
+            <hr style="margin:1.5rem 0;" />
+
+            <!-- Recent leads list -->
+            <div class="card-title"><i class="fas fa-list"></i> Recent Leads</div>
+            <div id="recentLeadsList" class="leads-list">
+                <div class="lead-item">Click "Refresh" to load leads.</div>
+            </div>
+            <button class="btn btn-secondary" onclick="fetchRecentLeads()" style="margin-top:1rem;">
+                <i class="fas fa-sync-alt"></i> Refresh Leads
+            </button>
+        </div>
+    </div>
+
+    <hr />
+    <div class="footer">
+        ⚡ Complete system – generate posts and capture leads. Ensure your GAS backend has a doPost handler.
+    </div>
+</div>
+
+<script>
+    // ================= CONFIGURATION (user must fill) =================
+    // These will be taken from the input fields
+    let GAS_URL = document.getElementById('gasUrlInput')?.value || '';
+    let GEMINI_API_KEY = '';
+
+    // ================= STATE =================
+    let currentPlatform = 'linkedin';
+    let currentPostText = '';
+
+    // ================= UI Helpers =================
+    function selectPlatform(platform) {
+        currentPlatform = platform;
+        document.getElementById('platformSelect').value = platform;
+        document.querySelectorAll('.platform-badge').forEach(b => b.classList.remove('selected'));
+        document.getElementById('badge-' + platform).classList.add('selected');
+    }
+
+    // ================= Prompt Templates =================
+    const promptTemplates = {
+        linkedin: `Create a LinkedIn post about [TOPIC] for an audience of MSME owners in the [INDUSTRY] sector.
+Tone: [TONE].
+Include relevant industry terminology.
+Format:
+- Start with a strong hook.
+- Use 2-3 line breaks between paragraphs.
+- End with a question to drive engagement.
+- Include 3-5 relevant hashtags at the end, each on a new line.
+
+Topic: [TOPIC]
+Additional details: [DETAILS]
+[UTM_NOTE]`,
+        twitter: `Create a Twitter thread (3-5 tweets) about [TOPIC] for [INDUSTRY] business owners.
+Tone: [TONE].
+Requirements:
+- First tweet hooks attention.
+- Each tweet under 280 characters.
+- Number tweets like [1/n].
+- Use "🧵" at end of first tweet.
+- No hashtags needed.
+
+Topic: [TOPIC]
+Additional details: [DETAILS]
+[UTM_NOTE]`,
+        instagram: `Create an Instagram caption about [TOPIC] for [INDUSTRY] entrepreneurs.
+Tone: [TONE].
+Format:
+- First 2 lines are crucial (they appear before "more").
+- Use line breaks between sections.
+- Emojis are welcome but not excessive.
+- Hashtags at bottom, each on new line.
+- Include a call to action like "Link in bio" or "Comment below".
+
+Topic: [TOPIC]
+Additional details: [DETAILS]
+[UTM_NOTE]`,
+        facebook: `Create a Facebook post about [TOPIC] for [INDUSTRY] MSME owners.
+Tone: [TONE].
+Style:
+- Conversational, like talking to a peer.
+- Include a question to drive comments.
+- Shorter paragraphs.
+- Emojis welcome.
+
+Topic: [TOPIC]
+Additional details: [DETAILS]
+[UTM_NOTE]`,
+        recruitment: `Create a recruitment post for [JOB TITLE] at a [INDUSTRY] company.
+Tone: [TONE].
+Include:
+- Job title and key requirements.
+- Why candidates should apply.
+- Clear call to action with link to apply.
+- 3-5 relevant hashtags.
+
+Job Title: [TOPIC]
+Additional details: [DETAILS]
+Hashtags: #[...]
+[UTM_NOTE]`,
+        leadmagnet: `Write a high-conversion "Hand-Raiser" post about [TOPIC] for [INDUSTRY] MSME owners.
+Goal: Get people to comment to receive a free resource (PDF, checklist, consultation).
+Tone: [TONE].
+Structure:
+1. Start with a shocking statistic or a common struggle faced by MSMEs in this industry.
+2. Offer a specific solution (the 'Lead Magnet' – e.g., a free checklist, consultation).
+3. Instruction: "Comment '[KEYWORD]' below and I'll DM you the link."
+4. No external links in the post (keep them in comments).
+5. End with 3 relevant hashtags.
+
+Topic: [TOPIC]
+Additional details: [DETAILS]`
+    };
+
+    // ================= Build Prompt =================
+    function buildPrompt() {
+        const platform = currentPlatform;
+        let topic = document.getElementById('topicInput').value.trim() || '[TOPIC]';
+        const details = document.getElementById('detailsInput').value.trim() || '[any specific points]';
+        const tone = document.getElementById('toneSelect').value;
+        const industry = document.getElementById('industrySelect').value;
+        const utmCampaign = document.getElementById('utmInput').value.trim();
+
+        // Append UTM to any links in details
+        let detailsWithUtm = details;
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        detailsWithUtm = details.replace(urlRegex, (url) => {
+            const separator = url.includes('?') ? '&' : '?';
+            const utm = `${separator}utm_source=${platform}&utm_medium=social&utm_campaign=${encodeURIComponent(utmCampaign || 'campaign')}`;
+            return url + utm;
+        });
+
+        let template = promptTemplates[platform] || promptTemplates.linkedin;
+        template = template.replace(/\[TOPIC\]/g, topic)
+                           .replace(/\[JOB TITLE\]/g, topic)
+                           .replace(/\[INDUSTRY\]/g, industry)
+                           .replace(/\[TONE\]/g, tone)
+                           .replace(/\[DETAILS\]/g, detailsWithUtm)
+                           .replace(/\[UTM_NOTE\]/g, utmCampaign ? `UTM campaign: ${utmCampaign}` : '');
+        return template;
+    }
+
+    // ================= Generate Hooks =================
+    async function generateHooks() {
+        const apiKey = document.getElementById('apiKeyInput').value.trim();
+        if (!apiKey) { showStatus('Please enter Gemini API key', 'error'); return; }
+        const topic = document.getElementById('topicInput').value.trim() || 'MSME growth';
+        const tone = document.getElementById('toneSelect').value;
+        const industry = document.getElementById('industrySelect').value;
+        const hookPrompt = `Generate 3 different attention-grabbing hooks for a social media post about "${topic}" targeting ${industry} business owners. Tone: ${tone}. Each hook should be one sentence. Number them 1,2,3.`;
+
+        document.getElementById('outputArea').innerText = '⏳ Generating hooks...';
+        setButtonsDisabled(true);
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: hookPrompt }] }] })
+            });
+            if (!response.ok) throw new Error('API error');
+            const data = await response.json();
+            const hooksText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No hooks generated.';
+            document.getElementById('outputArea').innerText = hooksText;
+        } catch (e) {
+            document.getElementById('outputArea').innerText = '❌ Error generating hooks.';
+        } finally {
+            setButtonsDisabled(false);
+        }
+    }
+
+    // ================= Generate Full Post =================
+    async function generatePost() {
+        const apiKey = document.getElementById('apiKeyInput').value.trim();
+        if (!apiKey) { showStatus('Please enter Gemini API key', 'error'); return; }
+        const prompt = buildPrompt();
+        document.getElementById('outputArea').innerText = '⏳ Generating full post...';
+        setButtonsDisabled(true);
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            if (!response.ok) throw new Error('API error');
+            const data = await response.json();
+            const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ No response generated.';
+            document.getElementById('outputArea').innerText = generatedText;
+            currentPostText = generatedText;
+            updateComposerLinks();
+        } catch (e) {
+            document.getElementById('outputArea').innerText = '❌ Error generating post.';
+        } finally {
+            setButtonsDisabled(false);
+        }
+    }
+
+    function setButtonsDisabled(disabled) {
+        document.getElementById('generateBtn').disabled = disabled;
+        document.getElementById('hookBtn').disabled = disabled;
+    }
+
+    function updateComposerLinks() {
+        const text = currentPostText;
+        const encoded = encodeURIComponent(text);
+        document.getElementById('composer-linkedin').href = text ? `https://www.linkedin.com/feed/?shareActive=true&text=${encoded}` : '#';
+        document.getElementById('composer-twitter').href = text ? `https://twitter.com/intent/tweet?text=${encoded}` : '#';
+        document.getElementById('composer-facebook').href = text ? 'https://facebook.com' : '#';
+        document.getElementById('composer-instagram').href = text ? 'https://instagram.com' : '#';
+        document.querySelectorAll('.composer-link').forEach(link => {
+            if (link.href === '#' || link.href.endsWith('#')) link.classList.add('disabled');
+            else link.classList.remove('disabled');
+        });
+    }
+
+    function copyOutput() {
+        const output = document.getElementById('outputArea').innerText;
+        if (!output || output.startsWith('⏳') || output.startsWith('❌') || output === '✨ Your generated post will appear here.') {
+            showStatus('Nothing to copy.', 'error'); return;
+        }
+        navigator.clipboard.writeText(output).then(() => showStatus('📋 Copied!', 'success'));
+    }
+
+    // ================= Lead Management =================
+    async function addLead() {
+        const gasUrl = document.getElementById('gasUrlInput').value.trim();
+        if (!gasUrl) { showStatus('Please enter GAS URL', 'error', 'leadStatus'); return; }
+        const name = document.getElementById('leadName').value.trim();
+        const contact = document.getElementById('leadContact').value.trim();
+        const service = document.getElementById('leadService').value;
+        const platform = document.getElementById('leadPlatform').value;
+        const notes = document.getElementById('leadNotes').value.trim();
+        const utm = document.getElementById('leadUtm').value.trim();
+        if (!name || !contact) { showStatus('Name and contact are required', 'error', 'leadStatus'); return; }
+
+        // Prepare data for POST
+        const payload = {
+            action: 'addLead',
+            name: name,
+            contact: contact,
+            service: service,
+            platform: platform,
+            notes: notes,
+            sourcePost: '',
+            utmCampaign: utm
+        };
+
+        showStatus('Saving...', '', 'leadStatus');
+        try {
+            const response = await fetch(gasUrl, {
+                method: 'POST',
+                mode: 'no-cors', // because GAS redirects, we use no-cors to avoid CORS errors; but then we can't read response.
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            // With no-cors, we can't read response, so assume success.
+            showStatus('✅ Lead added (check sheet)', 'success', 'leadStatus');
+            document.getElementById('leadName').value = '';
+            document.getElementById('leadContact').value = '';
+            document.getElementById('leadNotes').value = '';
+            fetchRecentLeads(); // refresh list
+        } catch (e) {
+            showStatus('❌ Error: ' + e.message, 'error', 'leadStatus');
+        }
+    }
+
+    async function fetchRecentLeads() {
+        const gasUrl = document.getElementById('gasUrlInput').value.trim();
+        if (!gasUrl) { showStatus('Please enter GAS URL', 'error', 'leadStatus'); return; }
+        try {
+            const response = await fetch(`${gasUrl}?action=getLeads`, { method: 'GET' });
+            if (!response.ok) throw new Error('Fetch failed');
+            const leads = await response.json();
+            const listDiv = document.getElementById('recentLeadsList');
+            if (!leads || leads.length === 0) {
+                listDiv.innerHTML = '<div class="lead-item">No leads yet.</div>';
+                return;
+            }
+            // Show last 5 leads
+            const recent = leads.slice(-5).reverse();
+            listDiv.innerHTML = recent.map(lead => `
+                <div class="lead-item">
+                    <strong>${lead.Name || '?'}</strong> (${lead.Service})<br>
+                    <small>${lead.Platform} · ${lead.Status} · ${new Date(lead.Timestamp).toLocaleDateString()}</small>
+                </div>
+            `).join('');
+        } catch (e) {
+            document.getElementById('recentLeadsList').innerHTML = `<div class="error">Error loading leads</div>`;
+        }
+    }
+
+    function showStatus(msg, type = 'info', targetId = 'statusMessage') {
+        const el = document.getElementById(targetId) || document.getElementById('statusMessage');
+        if (el) el.innerHTML = `<div class="${type}">${msg}</div>`;
+    }
+
+    // Initialise
+    window.onload = function() {
+        selectPlatform('linkedin');
+        updateComposerLinks();
+        fetchRecentLeads();
+    };
+</script>
+</body>
+</html>
