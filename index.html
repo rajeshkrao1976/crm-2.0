@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raveone Lead System · Complete</title>
+    <title>Raveone Lead‑Gen Marketing System</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -222,7 +222,7 @@
         }
         .leads-list {
             margin-top: 1rem;
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
@@ -260,9 +260,9 @@
 </head>
 <body>
 <div class="container">
-    <h1><i class="fas fa-bullseye"></i> Raveone Complete Lead System</h1>
+    <h1><i class="fas fa-bullseye"></i> Raveone Lead‑Gen Marketing System</h1>
     <div class="subhead">
-        Generate posts, capture leads, and track everything – all in one tool.
+        Generate high‑converting posts, capture leads, and track everything – all with one free tool.
     </div>
 
     <!-- API Key & GAS URL Configuration -->
@@ -273,15 +273,15 @@
             🔐 Your key stays in your browser – never stored. Get a free key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>.
         </div>
         <label style="margin-top:1rem;"><i class="fas fa-link"></i> Google Apps Script URL</label>
-        <input type="url" id="gasUrlInput" value="https://script.google.com/macros/s/AKfycbzDCpkEsIkFvX6apJSRGrHXLYTi1CrYDt_eScqK9y3FMA43xngN67Sy7obDXfR4AOh1Sw/exec" />
+        <input type="url" id="gasUrlInput" value="YOUR_GAS_WEB_APP_URL_HERE" placeholder="https://script.google.com/macros/s/.../exec" />
         <div class="note">
-            ⚙️ Your GAS web app URL (must be deployed with "Anyone" access).
+            ⚙️ Your GAS web app URL (must be deployed with "Anyone" access). After deploying, paste it here.
         </div>
     </div>
 
     <!-- Two columns: Left = Content Generator, Right = Lead Management -->
     <div class="two-column">
-        <!-- LEFT: Content Generator (from previous version) -->
+        <!-- LEFT: Content Generator -->
         <div class="card">
             <div class="card-title"><i class="fas fa-pen-fancy"></i> 1. Generate Post</div>
             <!-- Platform selection -->
@@ -424,16 +424,11 @@
 
     <hr />
     <div class="footer">
-        ⚡ Complete system – generate posts and capture leads. Ensure your GAS backend has a doPost handler.
+        ⚡ Complete system – generate posts and capture leads. Set up daily reminder trigger in Apps Script.
     </div>
 </div>
 
 <script>
-    // ================= CONFIGURATION (user must fill) =================
-    // These will be taken from the input fields
-    let GAS_URL = document.getElementById('gasUrlInput')?.value || '';
-    let GEMINI_API_KEY = '';
-
     // ================= STATE =================
     let currentPlatform = 'linkedin';
     let currentPostText = '';
@@ -632,7 +627,10 @@ Additional details: [DETAILS]`
     // ================= Lead Management =================
     async function addLead() {
         const gasUrl = document.getElementById('gasUrlInput').value.trim();
-        if (!gasUrl) { showStatus('Please enter GAS URL', 'error', 'leadStatus'); return; }
+        if (!gasUrl || gasUrl === 'YOUR_GAS_WEB_APP_URL_HERE') { 
+            showStatus('Please enter a valid GAS URL', 'error', 'leadStatus'); 
+            return; 
+        }
         const name = document.getElementById('leadName').value.trim();
         const contact = document.getElementById('leadContact').value.trim();
         const service = document.getElementById('leadService').value;
@@ -641,7 +639,6 @@ Additional details: [DETAILS]`
         const utm = document.getElementById('leadUtm').value.trim();
         if (!name || !contact) { showStatus('Name and contact are required', 'error', 'leadStatus'); return; }
 
-        // Prepare data for POST
         const payload = {
             action: 'addLead',
             name: name,
@@ -655,13 +652,13 @@ Additional details: [DETAILS]`
 
         showStatus('Saving...', '', 'leadStatus');
         try {
-            const response = await fetch(gasUrl, {
+            // Using no-cors because GAS redirects; we assume success.
+            await fetch(gasUrl, {
                 method: 'POST',
-                mode: 'no-cors', // because GAS redirects, we use no-cors to avoid CORS errors; but then we can't read response.
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            // With no-cors, we can't read response, so assume success.
             showStatus('✅ Lead added (check sheet)', 'success', 'leadStatus');
             document.getElementById('leadName').value = '';
             document.getElementById('leadContact').value = '';
@@ -674,9 +671,12 @@ Additional details: [DETAILS]`
 
     async function fetchRecentLeads() {
         const gasUrl = document.getElementById('gasUrlInput').value.trim();
-        if (!gasUrl) { showStatus('Please enter GAS URL', 'error', 'leadStatus'); return; }
+        if (!gasUrl || gasUrl === 'YOUR_GAS_WEB_APP_URL_HERE') { 
+            document.getElementById('recentLeadsList').innerHTML = '<div class="lead-item">Please enter a valid GAS URL.</div>';
+            return; 
+        }
         try {
-            const response = await fetch(`${gasUrl}?action=getLeads`, { method: 'GET' });
+            const response = await fetch(gasUrl, { method: 'GET' });
             if (!response.ok) throw new Error('Fetch failed');
             const leads = await response.json();
             const listDiv = document.getElementById('recentLeadsList');
@@ -684,8 +684,8 @@ Additional details: [DETAILS]`
                 listDiv.innerHTML = '<div class="lead-item">No leads yet.</div>';
                 return;
             }
-            // Show last 5 leads
-            const recent = leads.slice(-5).reverse();
+            // Show last 10 leads
+            const recent = leads.slice(-10).reverse();
             listDiv.innerHTML = recent.map(lead => `
                 <div class="lead-item">
                     <strong>${lead.Name || '?'}</strong> (${lead.Service})<br>
@@ -698,7 +698,7 @@ Additional details: [DETAILS]`
     }
 
     function showStatus(msg, type = 'info', targetId = 'statusMessage') {
-        const el = document.getElementById(targetId) || document.getElementById('statusMessage');
+        const el = document.getElementById(targetId);
         if (el) el.innerHTML = `<div class="${type}">${msg}</div>`;
     }
 
